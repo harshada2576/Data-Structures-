@@ -1,8 +1,8 @@
-/*The Personal To-Do List with Categories is a C program that manages tasks via a command-line interface. Users can add, 
-view (all or by category), mark as completed, or delete tasks, stored in a linked list. It uses structs (`Task`, `ToDoList`), 
-dynamic memory (`malloc`, `free`), string handling (`strncpy`, `strcmp`), pointers, loops, conditionals, and modular functions. 
-The menu-driven app ensures safe input and memory cleanup. It teaches linked lists, memory management, and CLI development, 
-with potential enhancements like file storage or task priorities.
+/*The Personal To-Do List with Categories is a C program that manages tasks . Users can add, view (all or by category), 
+mark as completed, or delete tasks, stored in a linked list. It uses structs (`Task`, `ToDoList`), 
+dynamic memory (`malloc`, `free`), string handling (`strncpy`, `strcmp`), pointers, loops, conditionals.The menu-driven app 
+ensures safe input and memory cleanup. It teaches linked lists.
+Uses Singly lisked list
 */
 //Harshada Avhad
 #include <stdio.h>
@@ -35,7 +35,7 @@ ToDoList* createToDoList() {
     ToDoList* list = (ToDoList*)malloc(sizeof(ToDoList)); // Allocate memory for the list
     if (list == NULL) { // Check for memory allocation failure
         printf("Memory allocation failed!\n");
-        exit(1);
+        return NULL;
     }
     list->head = NULL; // Initialize the list as empty
     return list;
@@ -51,7 +51,7 @@ Task* createTask(char* description, char* category) {
     Task* newTask = (Task*)malloc(sizeof(Task)); // Allocate memory for the new task
     if (newTask == NULL) { // Check for memory allocation failure
         printf("Memory allocation failed!\n");
-        exit(1);
+        return NULL;
     }
     // Copy description and category, ensuring null-termination
     strncpy(newTask->description, description, MAX_DESC - 1);
@@ -114,7 +114,9 @@ void viewTasks(ToDoList* list, char* category) {
 //   - description: The description of the task to mark as completed
 void markCompleted(ToDoList* list, char* description) {
     Task* current = list->head; // Start at the head
-    while (current != NULL) {
+    while (current != NULL)
+//The strcmp function in C is used to compare two strings. It’s declared in the string.h header and stands for string compare.
+	 {
         if (strcmp(current->description, description) == 0) { // Match task by description
             current->completed = 1; // Mark as completed
             printf("Task marked as completed: %s\n", description);
@@ -185,6 +187,8 @@ int main() {
         printf("Enter choice: ");
         scanf("%d", &choice);
         getchar(); // Clear newline from input buffer
+        if(choice==6)
+        break;
 
         switch (choice) {
             case 1: // Add a new task
@@ -217,12 +221,10 @@ int main() {
                 description[strcspn(description, "\n")] = 0; // Remove newline
                 deleteTask(list, description);
                 break;
-            case 6: // Exit the program
-                freeToDoList(list); // Free all allocated memory
-                printf("Exiting program.\n");
-                return 0;
-            default: // Handle invalid input
+            //
+	            default: // Handle invalid input
                 printf("Invalid choice. Try again.\n");
+    			return 0;
         }
     }
 }
